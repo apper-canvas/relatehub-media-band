@@ -105,7 +105,7 @@ const handleSaveDeal = async (dealData) => {
               : deal
           )
         );
-} else {
+      } else {
         const newDeal = await dealService.create({
           ...dealData,
           contactId: parseInt(dealData.contactId || dealData.contactId_c),
@@ -116,19 +116,20 @@ const handleSaveDeal = async (dealData) => {
             dealId: newDeal.Id,
             type: "deal",
             description: `New deal created: ${dealData.title || dealData.title_c} - $${dealData.value || dealData.value_c}`,
-          timestamp: new Date().toISOString(),
-        });
+            timestamp: new Date().toISOString(),
+          });
         
-        setDeals(prev => [...prev, newDeal]);
+          setDeals(prev => [...prev, newDeal]);
+        }
       }
       
-setIsModalOpen(false);
+      setIsModalOpen(false);
       toast.success(
         selectedDeal 
           ? "Deal updated successfully!" 
           : "Deal added successfully!"
       );
-} catch (error) {
+    } catch (error) {
       toast.error("Failed to save deal");
       console.error("Save deal error:", error);
     }
