@@ -122,17 +122,17 @@ const handleSaveDeal = async (dealData) => {
         setDeals(prev => [...prev, newDeal]);
       }
       
-      setIsModalOpen(false);
+setIsModalOpen(false);
       toast.success(
         selectedDeal 
-selectedDeal 
           ? "Deal updated successfully!" 
           : "Deal added successfully!"
       );
-    } catch (error) {
+} catch (error) {
       toast.error("Failed to save deal");
       console.error("Save deal error:", error);
     }
+  };
 
   const handleDragStart = (deal) => {
     setDraggedDeal(deal);
