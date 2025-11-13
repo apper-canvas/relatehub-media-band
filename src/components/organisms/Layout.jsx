@@ -109,11 +109,9 @@ const Layout = () => {
         onAddDeal={() => openModal("deal")}
         onAddTask={() => openModal("task")}
       />
-      
-      <main className="flex-1">
-        <Outlet />
+<main className="flex-1">
+        <Outlet context={{ openModal, closeModal }} />
       </main>
-
       {/* Modals */}
       <ContactModal
         isOpen={modals.contact.isOpen}
