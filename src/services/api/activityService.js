@@ -32,9 +32,17 @@ class ActivityService {
       if (!response.success) {
         console.error(response.message);
         throw new Error(response.message);
-      }
+}
 
-      return response.data || [];
+      // Validate date fields to prevent date-fns errors
+      const validatedData = (response.data || []).map(activity => ({
+        ...activity,
+        timestamp_c: activity.timestamp_c || activity.timestamp || new Date().toISOString(),
+        CreatedOn: activity.CreatedOn || new Date().toISOString(),
+        ModifiedOn: activity.ModifiedOn || new Date().toISOString()
+      }));
+
+      return validatedData;
     } catch (error) {
       console.error("Error fetching activities:", error?.response?.data?.message || error);
       throw error;
@@ -59,6 +67,17 @@ class ActivityService {
       if (!response.success) {
         console.error(response.message);
         throw new Error(response.message);
+}
+
+      // Validate date fields for single activity
+      const activity = response.data;
+      if (activity) {
+        return {
+          ...activity,
+          timestamp_c: activity.timestamp_c || activity.timestamp || new Date().toISOString(),
+          CreatedOn: activity.CreatedOn || new Date().toISOString(),
+          ModifiedOn: activity.ModifiedOn || new Date().toISOString()
+        };
       }
 
       return response.data;
@@ -92,11 +111,19 @@ class ActivityService {
       if (!response.success) {
         console.error(response.message);
         throw new Error(response.message);
-      }
+}
 
-      return response.data || [];
+      // Validate date fields for search results
+      const validatedData = (response.data || []).map(activity => ({
+        ...activity,
+        timestamp_c: activity.timestamp_c || activity.timestamp || new Date().toISOString(),
+        CreatedOn: activity.CreatedOn || new Date().toISOString(),
+        ModifiedOn: activity.ModifiedOn || new Date().toISOString()
+      }));
+
+      return validatedData;
     } catch (error) {
-      console.error(`Error fetching activities for contact ${contactId}:`, error?.response?.data?.message || error);
+      console.error("Error searching activities:", error?.response?.data?.message || error);
       throw error;
     }
   }
@@ -125,11 +152,19 @@ class ActivityService {
       if (!response.success) {
         console.error(response.message);
         throw new Error(response.message);
-      }
+}
 
-      return response.data || [];
+      // Validate date fields for recent activities
+      const validatedData = (response.data || []).map(activity => ({
+        ...activity,
+        timestamp_c: activity.timestamp_c || activity.timestamp || new Date().toISOString(),
+        CreatedOn: activity.CreatedOn || new Date().toISOString(),
+        ModifiedOn: activity.ModifiedOn || new Date().toISOString()
+      }));
+
+      return validatedData;
     } catch (error) {
-      console.error(`Error fetching activities for deal ${dealId}:`, error?.response?.data?.message || error);
+      console.error("Error fetching recent activities:", error?.response?.data?.message || error);
       throw error;
     }
   }

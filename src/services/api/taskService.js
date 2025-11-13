@@ -30,9 +30,17 @@ class TaskService {
       if (!response.success) {
         console.error(response.message);
         throw new Error(response.message);
-      }
+}
 
-      return response.data || [];
+      // Validate date fields to prevent date-fns errors
+      const validatedData = (response.data || []).map(task => ({
+        ...task,
+        dueDate_c: task.dueDate_c || task.dueDate || null,
+        CreatedOn: task.CreatedOn || new Date().toISOString(),
+        ModifiedOn: task.ModifiedOn || new Date().toISOString()
+      }));
+
+      return validatedData;
     } catch (error) {
       console.error("Error fetching tasks:", error?.response?.data?.message || error);
       throw error;
@@ -56,6 +64,17 @@ class TaskService {
       if (!response.success) {
         console.error(response.message);
         throw new Error(response.message);
+}
+
+      // Validate date fields for single task
+      const task = response.data;
+      if (task) {
+        return {
+          ...task,
+          dueDate_c: task.dueDate_c || task.dueDate || null,
+          CreatedOn: task.CreatedOn || new Date().toISOString(),
+          ModifiedOn: task.ModifiedOn || new Date().toISOString()
+        };
       }
 
       return response.data;
@@ -87,11 +106,19 @@ class TaskService {
       if (!response.success) {
         console.error(response.message);
         throw new Error(response.message);
-      }
+}
 
-      return response.data || [];
+      // Validate date fields for search results
+      const validatedData = (response.data || []).map(task => ({
+        ...task,
+        dueDate_c: task.dueDate_c || task.dueDate || null,
+        CreatedOn: task.CreatedOn || new Date().toISOString(),
+        ModifiedOn: task.ModifiedOn || new Date().toISOString()
+      }));
+
+      return validatedData;
     } catch (error) {
-      console.error(`Error fetching tasks for contact ${contactId}:`, error?.response?.data?.message || error);
+      console.error("Error searching tasks:", error?.response?.data?.message || error);
       throw error;
     }
   }

@@ -76,9 +76,9 @@ class DealService {
         records: [{
           title_c: dealData.title_c || dealData.title,
           value_c: parseFloat(dealData.value_c || dealData.value),
-          stage_c: dealData.stage_c || dealData.stage,
+stage_c: dealData.stage_c || dealData.stage,
           probability_c: parseInt(dealData.probability_c || dealData.probability),
-          expectedCloseDate_c: dealData.expectedCloseDate_c || dealData.expectedCloseDate,
+          expectedCloseDate_c: (dealData.expectedCloseDate_c || dealData.expectedCloseDate) || null,
           contactId_c: parseInt(dealData.contactId_c || dealData.contactId)
         }]
       };
@@ -132,9 +132,9 @@ if (response.results) {
           Id: parseInt(id),
           title_c: dealData.title_c || dealData.title,
           value_c: parseFloat(dealData.value_c || dealData.value),
-          stage_c: dealData.stage_c || dealData.stage,
+stage_c: dealData.stage_c || dealData.stage,
           probability_c: parseInt(dealData.probability_c || dealData.probability),
-          expectedCloseDate_c: dealData.expectedCloseDate_c || dealData.expectedCloseDate,
+          expectedCloseDate_c: (dealData.expectedCloseDate_c || dealData.expectedCloseDate) || null,
           contactId_c: parseInt(dealData.contactId_c || dealData.contactId)
         }]
       };
