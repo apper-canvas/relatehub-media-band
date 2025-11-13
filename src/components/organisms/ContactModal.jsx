@@ -73,14 +73,15 @@ setFormData({
       return;
     }
 
-    setIsLoading(true);
+setIsLoading(true);
     try {
       const contactData = {
         ...formData,
         tags: formData.tags
           .split(",")
           .map(tag => tag.trim())
-          .filter(tag => tag.length > 0),
+          .filter(tag => tag.length > 0)
+          .join(","), // Keep as comma-separated string for Tag type field
       };
 
       await onSave(contactData);

@@ -72,13 +72,15 @@ class ContactService {
   async create(contactData) {
     try {
       const apperClient = this.getApperClientInstance();
-      const params = {
+const params = {
         records: [{
           name_c: contactData.name_c || contactData.name,
           company_c: contactData.company_c || contactData.company,
           email_c: contactData.email_c || contactData.email,
           phone_c: contactData.phone_c || contactData.phone,
-          tags_c: contactData.tags_c || contactData.tags,
+          tags_c: Array.isArray(contactData.tags_c || contactData.tags) 
+            ? (contactData.tags_c || contactData.tags).join(",")
+            : (contactData.tags_c || contactData.tags || ""),
           notes_c: contactData.notes_c || contactData.notes
         }]
       };
@@ -114,14 +116,16 @@ class ContactService {
   async update(id, contactData) {
     try {
       const apperClient = this.getApperClientInstance();
-      const params = {
+const params = {
         records: [{
           Id: parseInt(id),
           name_c: contactData.name_c || contactData.name,
           company_c: contactData.company_c || contactData.company,
           email_c: contactData.email_c || contactData.email,
           phone_c: contactData.phone_c || contactData.phone,
-          tags_c: contactData.tags_c || contactData.tags,
+          tags_c: Array.isArray(contactData.tags_c || contactData.tags) 
+            ? (contactData.tags_c || contactData.tags).join(",")
+            : (contactData.tags_c || contactData.tags || ""),
           notes_c: contactData.notes_c || contactData.notes
         }]
       };
