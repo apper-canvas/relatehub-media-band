@@ -56,10 +56,10 @@ const [selectedContact, setSelectedContact] = useState(null);
     const filtered = contacts.filter(contact => {
       const searchLower = searchTerm.toLowerCase();
       return (
-        contact.name.toLowerCase().includes(searchLower) ||
-        contact.company.toLowerCase().includes(searchLower) ||
-        contact.email.toLowerCase().includes(searchLower) ||
-        (contact.tags && contact.tags.some(tag => 
+(contact.name_c || contact.name || '').toLowerCase().includes(searchLower) ||
+        (contact.company_c || contact.company || '').toLowerCase().includes(searchLower) ||
+        (contact.email_c || contact.email || '').toLowerCase().includes(searchLower) ||
+        ((contact.tags_c || contact.tags) && (contact.tags_c || contact.tags).split(',').some(tag => 
           tag.toLowerCase().includes(searchLower)
         ))
       );
@@ -109,12 +109,12 @@ const [selectedContact, setSelectedContact] = useState(null);
     try {
       if (selectedContact) {
         await contactService.update(selectedContact.Id, contactData);
-        await activityService.create({
-          contactId: selectedContact.Id,
-          dealId: null,
-          type: "note",
-          description: `Contact updated: ${contactData.name}`,
-          timestamp: new Date().toISOString(),
+await activityService.create({
+          contactId_c: selectedContact.Id,
+          dealId_c: null,
+          type_c: "note",
+          description_c: `Contact updated: ${contactData.name_c || contactData.name}`,
+          timestamp_c: new Date().toISOString(),
         });
         
         setContacts(prev =>
@@ -126,11 +126,11 @@ const [selectedContact, setSelectedContact] = useState(null);
         );
       } else {
         const newContact = await contactService.create(contactData);
-        await activityService.create({
-          contactId: newContact.Id,
-          dealId: null,
-          type: "note",
-          description: `New contact added: ${contactData.name}`,
+await activityService.create({
+          contactId_c: newContact.Id,
+          dealId_c: null,
+          type_c: "note",
+          description_c: `New contact added: ${contactData.name_c || contactData.name}`,
           timestamp: new Date().toISOString(),
         });
         

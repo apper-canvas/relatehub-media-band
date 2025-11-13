@@ -1,13 +1,17 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useAuth } from "@/layouts/Root";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeMenu, setActiveMenu] = useState(null);
   const location = useLocation();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const navigation = [
     { name: "Dashboard", path: "/", icon: "LayoutDashboard" },
@@ -55,6 +59,14 @@ const Header = () => {
 
           {/* Quick Add Button */}
 <div className="flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              onClick={logout}
+              className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
+            >
+              <ApperIcon name="LogOut" className="h-4 w-4" />
+              <span>Logout</span>
+            </Button>
 
             {/* Mobile Menu Button */}
             <button

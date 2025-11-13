@@ -31,18 +31,18 @@ const ActivityItem = ({ activity }) => {
     <div className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
       <div className={cn(
         "p-2 rounded-full",
-        getActivityColor(activity.type)
+getActivityColor(activity.type_c || activity.type)
       )}>
         <ApperIcon 
-          name={getActivityIcon(activity.type)} 
+          name={getActivityIcon(activity.type_c || activity.type)}
           className="h-4 w-4" 
         />
       </div>
       
       <div className="flex-1 min-w-0">
-        <p className="text-sm text-gray-900">{activity.description}</p>
+<p className="text-sm text-gray-900">{activity.description_c || activity.description}</p>
         <p className="text-xs text-gray-500 mt-1">
-          {format(new Date(activity.timestamp), "MMM d, yyyy 'at' h:mm a")}
+          {format(new Date(activity.timestamp_c || activity.timestamp), "MMM d, yyyy 'at' h:mm a")}
         </p>
       </div>
     </div>

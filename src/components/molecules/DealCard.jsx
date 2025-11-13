@@ -28,30 +28,30 @@ const DealCard = ({ deal, contact, onDragStart, onDragEnd }) => {
       className="card p-4 bg-gradient-to-br from-white to-gray-50 hover:shadow-md cursor-grab active:cursor-grabbing mb-3"
     >
       <div className="flex items-start justify-between mb-3">
-        <h4 className="font-medium text-gray-900 text-sm">{deal.title}</h4>
-        <Badge variant={getProbabilityColor(deal.probability)} className="text-xs">
-          {deal.probability}%
+<h4 className="font-medium text-gray-900 text-sm">{deal.title_c || deal.title}</h4>
+        <Badge variant={getProbabilityColor(deal.probability_c || deal.probability)} className="text-xs">
+          {deal.probability_c || deal.probability}%
         </Badge>
       </div>
 
       <div className="space-y-2 mb-3">
         <div className="flex items-center justify-between">
           <span className="text-lg font-bold text-primary">
-            {formatCurrency(deal.value)}
+{formatCurrency(deal.value_c || deal.value)}
           </span>
         </div>
         
         {contact && (
           <div className="flex items-center space-x-2 text-xs text-gray-600">
             <ApperIcon name="User" className="h-3 w-3" />
-            <span>{contact.name}</span>
+<span>{contact?.Name || contact?.name_c || contact?.name || 'N/A'}</span>
           </div>
         )}
 
         <div className="flex items-center space-x-2 text-xs text-gray-600">
           <ApperIcon name="Calendar" className="h-3 w-3" />
           <span>
-            Close: {format(new Date(deal.expectedCloseDate), "MMM d, yyyy")}
+Close: {format(new Date(deal.expectedCloseDate_c || deal.expectedCloseDate), "MMM d, yyyy")}
           </span>
         </div>
       </div>
