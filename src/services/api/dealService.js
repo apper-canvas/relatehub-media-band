@@ -90,7 +90,7 @@ class DealService {
         throw new Error(response.message);
       }
 
-      if (response.results) {
+if (response.results) {
         const successful = response.results.filter(r => r.success);
         const failed = response.results.filter(r => !r.success);
 
@@ -101,7 +101,20 @@ class DealService {
           });
         }
 
-        return successful.length > 0 ? successful[0].data : null;
+        if (successful.length > 0) {
+          // Normalize field names for UI compatibility
+          const dealData = successful[0].data;
+          return {
+            ...dealData,
+            title: dealData.title_c || dealData.title,
+            value: dealData.value_c || dealData.value,
+            stage: dealData.stage_c || dealData.stage,
+            probability: dealData.probability_c || dealData.probability,
+            expectedCloseDate: dealData.expectedCloseDate_c || dealData.expectedCloseDate,
+            contactId: dealData.contactId_c || dealData.contactId
+          };
+        }
+        return null;
       }
 
       return null;

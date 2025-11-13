@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import ApperIcon from "@/components/ApperIcon";
-import Button from "@/components/atoms/Button";
-import DealCard from "@/components/molecules/DealCard";
-import DealModal from "@/components/organisms/DealModal";
-import Loading from "@/components/ui/Loading";
-import Error from "@/components/ui/Error";
-import Empty from "@/components/ui/Empty";
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { dealService } from "@/services/api/dealService";
 import { contactService } from "@/services/api/contactService";
 import { activityService } from "@/services/api/activityService";
 import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import DealCard from "@/components/molecules/DealCard";
+import Loading from "@/components/ui/Loading";
+import Empty from "@/components/ui/Empty";
+import Error from "@/components/ui/Error";
+import DealModal from "@/components/organisms/DealModal";
+import Button from "@/components/atoms/Button";
 
 const Pipeline = () => {
   const [deals, setDeals] = useState([]);
@@ -54,17 +54,17 @@ const Pipeline = () => {
     }
   };
 
-  const getDealsByStage = (stage) => {
-    return deals.filter(deal => deal.stage === stage);
+const getDealsByStage = (stage) => {
+    return deals.filter(deal => (deal.stage_c || deal.stage) === stage);
   };
 
   const getContactById = (contactId) => {
     return contacts.find(contact => contact.Id === contactId);
   };
 
-  const getStageTotal = (stage) => {
+const getStageTotal = (stage) => {
     const stageDeals = getDealsByStage(stage);
-    return stageDeals.reduce((sum, deal) => sum + deal.value, 0);
+    return stageDeals.reduce((sum, deal) => sum + (deal.value_c || deal.value || 0), 0);
   };
 
   const formatCurrency = (value) => {
@@ -86,15 +86,15 @@ const Pipeline = () => {
     setIsModalOpen(true);
   };
 
-  const handleSaveDeal = async (dealData) => {
+const handleSaveDeal = async (dealData) => {
     try {
       if (selectedDeal) {
         await dealService.update(selectedDeal.Id, dealData);
         await activityService.create({
-          contactId: parseInt(dealData.contactId),
+          contactId: parseInt(dealData.contactId || dealData.contactId_c),
           dealId: selectedDeal.Id,
           type: "deal",
-          description: `Deal updated: ${dealData.title} - $${dealData.value}`,
+          description: `Deal updated: ${dealData.title || dealData.title_c} - $${dealData.value || dealData.value_c}`,
           timestamp: new Date().toISOString(),
         });
         
@@ -105,16 +105,17 @@ const Pipeline = () => {
               : deal
           )
         );
-      } else {
+} else {
         const newDeal = await dealService.create({
           ...dealData,
-          contactId: parseInt(dealData.contactId),
+          contactId: parseInt(dealData.contactId || dealData.contactId_c),
         });
-        await activityService.create({
-          contactId: parseInt(dealData.contactId),
-          dealId: newDeal.Id,
-          type: "deal",
-          description: `New deal created: ${dealData.title} - $${dealData.value}`,
+        if (newDeal) {
+          await activityService.create({
+            contactId: parseInt(dealData.contactId || dealData.contactId_c),
+            dealId: newDeal.Id,
+            type: "deal",
+            description: `New deal created: ${dealData.title || dealData.title_c} - $${dealData.value || dealData.value_c}`,
           timestamp: new Date().toISOString(),
         });
         
@@ -124,6 +125,7 @@ const Pipeline = () => {
       setIsModalOpen(false);
       toast.success(
         selectedDeal 
+selectedDeal 
           ? "Deal updated successfully!" 
           : "Deal added successfully!"
       );
@@ -131,7 +133,6 @@ const Pipeline = () => {
       toast.error("Failed to save deal");
       console.error("Save deal error:", error);
     }
-  };
 
   const handleDragStart = (deal) => {
     setDraggedDeal(deal);
@@ -141,16 +142,16 @@ const Pipeline = () => {
     setDraggedDeal(null);
   };
 
-  const handleStageDrop = async (targetStage) => {
-    if (!draggedDeal || draggedDeal.stage === targetStage) return;
+const handleStageDrop = async (targetStage) => {
+    if (!draggedDeal || (draggedDeal.stage_c || draggedDeal.stage) === targetStage) return;
 
     try {
       await dealService.update(draggedDeal.Id, { stage: targetStage });
-      await activityService.create({
-        contactId: draggedDeal.contactId,
+await activityService.create({
+        contactId: draggedDeal.contactId_c || draggedDeal.contactId,
         dealId: draggedDeal.Id,
         type: "deal",
-        description: `Deal moved to ${targetStage}: ${draggedDeal.title}`,
+        description: `Deal moved to ${targetStage}: ${draggedDeal.title_c || draggedDeal.title}`,
         timestamp: new Date().toISOString(),
       });
       
@@ -250,8 +251,8 @@ const Pipeline = () => {
 
                     <div className="space-y-3">
                       <AnimatePresence>
-                        {stageDeals.map((deal) => {
-                          const contact = getContactById(deal.contactId);
+{stageDeals.map((deal) => {
+                          const contact = getContactById(deal.contactId_c || deal.contactId);
                           
                           return (
                             <motion.div
