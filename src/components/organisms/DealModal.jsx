@@ -176,9 +176,9 @@ const DealModal = ({ isOpen, onClose, deal, onSave }) => {
               onChange={(e) => handleChange("contactId", e.target.value)}
               error={errors.contactId}
               required
-              options={contacts.map(contact => ({
+options={contacts.map(contact => ({
                 value: contact.Id.toString(),
-                label: `${contact.name} (${contact.company})`,
+                label: `${contact.name_c} (${contact.company_c})`,
               }))}
             />
 
