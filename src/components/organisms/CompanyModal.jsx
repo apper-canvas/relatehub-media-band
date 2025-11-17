@@ -21,7 +21,7 @@ function CompanyModal({ isOpen, onClose, company, onSave, isLoading }) {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
+useEffect(() => {
     if (company) {
       setFormData({
         name_c: company.name_c || '',
@@ -42,7 +42,7 @@ function CompanyModal({ isOpen, onClose, company, onSave, isLoading }) {
         phone_c: '',
         website_c: '',
       });
-}
+    }
     setErrors({});
   }, [company, isOpen]);
 
