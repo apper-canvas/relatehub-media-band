@@ -46,12 +46,12 @@ useEffect(() => {
     setErrors({});
   }, [company, isOpen]);
 
-  const validateForm = () => {
+const validateForm = (dataToValidate) => {
     // Clear any previous errors before validation
     const newErrors = {};
 
-    // Check current formData state - ensure trim() is called on string
-    const nameValue = String(formData.name_c || '').trim();
+    // Check the data being validated - ensure trim() is called on string
+    const nameValue = String(dataToValidate.name_c || '').trim();
     if (!nameValue) {
       newErrors.name_c = 'Company name is required';
     }
@@ -76,7 +76,7 @@ useEffect(() => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
+    if (!validateForm(formData)) {
       return;
     }
 
