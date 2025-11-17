@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import ApperIcon from '@/components/ApperIcon';
-import Button from '@/components/atoms/Button';
-import FormField from '@/components/molecules/FormField';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import FormField from "@/components/molecules/FormField";
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
+import Textarea from "@/components/atoms/Textarea";
 
 function CompanyModal({ isOpen, onClose, company, onSave, isLoading }) {
   const [formData, setFormData] = useState({
@@ -127,91 +129,83 @@ function CompanyModal({ isOpen, onClose, company, onSave, isLoading }) {
               </button>
             </div>
 
-            {/* Form */}
+{/* Form */}
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <FormField
                 label="Company Name"
                 required
                 error={errors.name_c}
               >
-                <input
+                <Input
                   type="text"
                   value={formData.name_c}
                   onChange={(e) => handleChange('name_c', e.target.value)}
                   placeholder="Enter company name"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   disabled={isSubmitting}
                 />
               </FormField>
 
               <FormField label="Address">
-                <textarea
+                <Textarea
                   value={formData.address_c}
                   onChange={(e) => handleChange('address_c', e.target.value)}
                   placeholder="Enter street address"
-                  rows="2"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  rows={2}
                   disabled={isSubmitting}
                 />
               </FormField>
 
               <div className="grid grid-cols-2 gap-3">
                 <FormField label="City">
-                  <input
+                  <Input
                     type="text"
                     value={formData.city_c}
                     onChange={(e) => handleChange('city_c', e.target.value)}
                     placeholder="Enter city"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                     disabled={isSubmitting}
                   />
                 </FormField>
 
                 <FormField label="State">
-                  <input
+                  <Input
                     type="text"
                     value={formData.state_c}
                     onChange={(e) => handleChange('state_c', e.target.value)}
                     placeholder="Enter state"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                     disabled={isSubmitting}
                   />
                 </FormField>
               </div>
 
               <FormField label="Zip Code">
-                <input
+                <Input
                   type="text"
                   value={formData.zip_c}
                   onChange={(e) => handleChange('zip_c', e.target.value)}
                   placeholder="Enter zip code"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   disabled={isSubmitting}
                 />
               </FormField>
 
               <FormField label="Phone">
-                <input
+                <Input
                   type="tel"
                   value={formData.phone_c}
                   onChange={(e) => handleChange('phone_c', e.target.value)}
                   placeholder="Enter phone number"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   disabled={isSubmitting}
                 />
               </FormField>
 
               <FormField label="Website">
-                <input
+                <Input
                   type="url"
                   value={formData.website_c}
                   onChange={(e) => handleChange('website_c', e.target.value)}
                   placeholder="Enter website URL"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   disabled={isSubmitting}
                 />
               </FormField>
-
               {/* Actions */}
               <div className="flex gap-3 pt-4 border-t border-gray-200">
                 <Button
