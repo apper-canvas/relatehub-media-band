@@ -42,14 +42,17 @@ function CompanyModal({ isOpen, onClose, company, onSave, isLoading }) {
         phone_c: '',
         website_c: '',
       });
-    }
+}
     setErrors({});
   }, [company, isOpen]);
 
   const validateForm = () => {
+    // Clear any previous errors before validation
     const newErrors = {};
 
-    if (!formData.name_c?.trim()) {
+    // Check current formData state - ensure trim() is called on string
+    const nameValue = String(formData.name_c || '').trim();
+    if (!nameValue) {
       newErrors.name_c = 'Company name is required';
     }
 
